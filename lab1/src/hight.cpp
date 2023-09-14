@@ -1,15 +1,8 @@
 #include<iostream>
 
-int hight() {
+int hight(int UpSpeed, int DownSpeed, int desiredHeight) {
 
-    int UpSpeed, DownSpeed, desiredHeight;
-    std::cout << "Введите скорость роста [метров/день] ";
-    std::cin >> UpSpeed;
-    std::cout << "Введите скорость уменьшения [метров/ночь] ";
-    std::cin >> DownSpeed;
-    std::cout << "Введите конечную высоту [метров] ";
-    std::cin >> desiredHeight;
-
+    
     int currentHeight = 0;
     int dayCount = 1;
 

@@ -1,5 +1,17 @@
+#include <iostream>
+
 #include "hight.hpp"
 
 int main() {
-    hight();
+
+    int UpSpeed, DownSpeed, desiredHeight;
+
+    std::cout << "Введите скорость роста [метров/день] ";
+    std::cin >> UpSpeed;
+    std::cout << "Введите скорость уменьшения [метров/ночь] ";
+    std::cin >> DownSpeed;
+    std::cout << "Введите конечную высоту [метров] ";
+    std::cin >> desiredHeight;
+
+    hight(UpSpeed, DownSpeed, desiredHeight);
 }
