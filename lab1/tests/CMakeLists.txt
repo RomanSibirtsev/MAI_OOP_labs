@@ -1,3 +1,5 @@
+cmake_minimum_required(VERSION 3.20)
+
 include(FetchContent)
 
 FetchContent_Declare(
@@ -16,6 +18,6 @@ set(CMAKE_CXX_STANDARD 17)
 add_executable(lab1_test test.cpp ../src/hight.cpp ../include/hight.hpp)
 
 target_link_libraries(lab1_test PRIVATE GTest::GTest)
-target_include_directories(lab1_test PRIVATE ../lab1/include)
+target_include_directories(lab1_test PRIVATE ../include)
 
 add_test(lab1_test lab1_test)
