@@ -1,7 +1,7 @@
 #include<iostream>
 
 int hight() {
-    
+
     int UpSpeed, DownSpeed, desiredHeight;
     std::cout << "Введите скорость роста [метров/день] ";
     std::cin >> UpSpeed;
@@ -11,7 +11,7 @@ int hight() {
     std::cin >> desiredHeight;
 
     int currentHeight = 0;
-    int dayCount = 0;
+    int dayCount = 1;
 
     if ((UpSpeed <= DownSpeed) && (desiredHeight != 0)) {
         return -1;
@@ -26,6 +26,8 @@ int hight() {
 
         currentHeight -= DownSpeed;
         std::cout << "После ночи " << dayCount << " --> " << currentHeight << std::endl;
+
+        ++dayCount;
 
     }
 
