@@ -13,5 +13,5 @@ int main() {
     std::cout << "Введите конечную высоту [метров] ";
     std::cin >> desiredHeight;
 
-    hight(UpSpeed, DownSpeed, desiredHeight);
+    std::cout << hight(UpSpeed, DownSpeed, desiredHeight) << std::endl;
 }
