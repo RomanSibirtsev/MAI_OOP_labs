@@ -1,3 +1,4 @@
 #pragma once
 
-int hight(int UpSpeed, int DownSpeed, int desiredHeight);
+#include <string> 
+std::string hight(int UpSpeed, int DownSpeed, int desiredHeight);
