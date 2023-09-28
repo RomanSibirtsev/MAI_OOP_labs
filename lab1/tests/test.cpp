@@ -35,10 +35,10 @@ TEST(NotValid, Test_3) {
     ASSERT_EQ(hight(30, 5, 210), "растение никогда не достигнет заданного уровня!!!");
 }
 
-TEST(LezzZero, Test_1) {
+TEST(LessZero, Test_1) {
     ASSERT_EQ(hight(20, 30, 80), "растение никогда не достигнет заданного уровня!!!");
 }
 
-TEST(LezzZero, Test_2) {
+TEST(LessZero, Test_2) {
     ASSERT_EQ(hight(50, 100, 30), "растение никогда не достигнет заданного уровня!!!");
 }
