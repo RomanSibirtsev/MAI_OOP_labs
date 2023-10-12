@@ -24,8 +24,9 @@ public:
     bool operator>(Octal const& obj);
     bool operator<(Octal const& obj);
     bool operator==(Octal const& obj);
-    //virtual ~Octal() noexcept;
-    std::vector<u_char> data;
+    ~Octal() noexcept;
+    u_char* data;
+    size_t size;
 };
 
 std::ostream& operator<<(std::ostream& os, const Octal& obj);

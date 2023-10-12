@@ -1,76 +1,124 @@
 #include "Octal.hpp"
 
-Octal::Octal(const size_t & n, unsigned char t) {
-    this->data = std::vector<u_char>(n, t);
-};
+Octal::Octal() : size{0}, data{nullptr} {}
 
-Octal::Octal(const std::initializer_list<unsigned char> &t) : data{t} {
-    u_char swap;
-    size_t s = this->data.size();
-    for (size_t i{0}; i < s / 2; ++i) {
-        swap = this->data[i];
-        this->data[i] = this->data[s - 1 - i];
-        this->data[s - 1 - i] = swap;
+Octal::Octal(const size_t & n, unsigned char t) : size{n} {
+    this->data = new u_char[n];
+    for (size_t i = 0; i < n; ++i) {
+        this->data[i] = t;
     }
 };
 
-Octal::Octal(const std::string &t) {
-    this->data = std::vector<u_char>(t.size(), 0);
-    for (size_t i{0}; i < t.size(); ++i) {
+Octal::Octal(const std::initializer_list<unsigned char> &t) {
+    this->size = t.size();
+    this->data = new u_char[this->size];
+    size_t i = this->size - 1;
+    for (auto c : t) {
+        this->data[i--] = c - 48;
+    }
+};
+
+Octal::Octal(const std::string &t) { 
+    this->size = t.size(); 
+    this->data = new u_char[this->size];
+    for (size_t i = 0; i < this->size; ++i) {
         this->data[i] = t[t.size() - 1 - i] - 48;
     }
 };
 
-Octal::Octal(const Octal& other) : data{other.data} {};
+Octal::Octal(const Octal& other) {
+    std::cout << "COPY"<<std::endl;
+    this->size = other.size;
+    this->data = new u_char[size];
+    for (size_t i = 0; i < size; ++i) {
+        this->data[i] = other.data[i];
+    }
+};
 
-// Octal(Octal&& other) noexcept;
+Octal::Octal(Octal&& other) noexcept {
+    this->size = other.size;
+    this->data = other.data;
+
+    other.size = 0;
+    other.data = nullptr;
+};
+
 Octal Octal::operator+(Octal const& obj) {
-
-    Octal result(std::max(this->data.size(), obj.data.size()), 0);
+    std::string res(std::max(this->size, obj.size)+1, '0');
     size_t i = 0;
-    std::vector<u_char> new_data;
     int tmp = 0;
 
-    for (; i < std::min(this->data.size(), obj.data.size()); ++i) {
-        result.data[i] = ((this->data[i] + obj.data[i] + tmp) % 8);
+    for (; i < std::min(this->size, obj.size); ++i) {
+        res[i] = ((this->data[i] + obj.data[i] + tmp) % 8) + '0';
         tmp = (this->data[i] + obj.data[i] + tmp) / 8;
     }
 
-    for (; i < this->data.size(); ++i)
-        result.data[i] = this->data[i];
-    for (; i < obj.data.size(); ++i)
-        result.data[i] = obj.data[i];
+    for (; i < this->size; ++i) {
+        res[i] = (this->data[i] + tmp) % 8 + '0';
+        tmp = (this->data[i] + tmp)/ 8;
+    }
 
-    return result;
+    for (; i < obj.size; ++i) {
+        res[i] = (obj.data[i] + tmp) % 8 + '0';
+        tmp = (obj.data[i] + tmp) / 8;
+    }
+
+    if (tmp != 0) {
+        res[i] += 1;
+    }
+
+    if (res[res.size() - 1] == '0') {
+        res.erase(res.size() - 1, 1);
+    }
+
+    std::reverse(res.begin(), res.end());
+
+    return Octal(res);
 }
 
 Octal Octal::operator-(Octal const& obj) {
-    Octal result(std::max(this->data.size(), obj.data.size()),0);
+    std::string res(std::max(this->size, obj.size), '0');
     size_t i = 0;
     int tmp = 0;
-    for (; i < obj.data.size(); ++i) {
+    for (; i < obj.size; ++i) {
         if (this->data[i] < obj.data[i] + tmp) {
-            result.data[i] = this->data[i] - obj.data[i] + 8;
+            res[i] = (this->data[i] - obj.data[i] + 8) + '0';
             tmp = 1;
         } else {
-            result.data[i] = this->data[i] - obj.data[i] - 1;
+            res[i] = (this->data[i] - obj.data[i] - tmp) + '0';
             tmp = 0;
         }
-
     }
 
-    if (result.data[this->data.size() - 1] == 0)
-        result.data.erase(result.data.begin() + this->data.size() - 1);
+    for (; i < this->size; ++i)
+        res[i] = this->data[i] + '0';
 
-    return result;
+    for (; i < obj.size; ++i)
+        res[i] = obj.data[i] + '0';
+
+    while (res[res.size() - 1] == '0') {
+         res.erase(res.size() - 1, 1);
+    }
+
+    std::reverse(res.begin(), res.end());
+
+    return Octal(res);
 }
 
 void Octal::operator=(Octal const& obj) {
-    this->data = obj.data;
+    if (&obj != this) {
+        delete[] this->data;
+        this->size = obj.size;
+        this->data = new u_char[this->size];
+        for (size_t i = 0; i < this->size; ++i) {
+            this->data[i] = obj.data[i];
+        }
+    }
 }
+
 bool Octal::operator>(Octal const& obj) {
-    if (this->data.size() == obj.data.size()) {
-        int i = this->data.size() - 1;
+    if (this->size == obj.size) {
+        int i = this->size - 1;
         while (this->data[i] == obj.data[i]) {
             --i;
         }
@@ -78,11 +126,12 @@ bool Octal::operator>(Octal const& obj) {
         else return (this->data[i] > obj.data[i]);
 
     }
-    else return this->data.size() > obj.data.size();
+    else return this->size > obj.size;
 }
+
 bool Octal::operator<(Octal const& obj) {
-    if (this->data.size() == obj.data.size()) {
-        int i = this->data.size() - 1;
+    if (this->size == obj.size) {
+        int i = this->size - 1;
         while (this->data[i] == obj.data[i]) {
             --i;
         }
@@ -90,21 +139,29 @@ bool Octal::operator<(Octal const& obj) {
         else return (this->data[i] < obj.data[i]);
 
     }
-    else return this->data.size() < obj.data.size();
+    else return this->size < obj.size;
 }
 bool Octal::operator==(Octal const& obj) {
-    if (this->data.size() != obj.data.size()) return 0;
+    if (this->size != obj.size) return 0;
     else {
-        int i = this->data.size() - 1;
+        int i = this->size - 1;
         while (this->data[i] == obj.data[i] and i >= 0) {
             --i;
         }
         return (i < 0);
     }
 }
+
+Octal::~Octal() noexcept{
+    if (this->size > 0) {
+        this->size = 0;
+        delete[] this->data;
+        this->data = nullptr;
+    }
+} 
       
 std::ostream& operator<<(std::ostream& os, const Octal& obj) {
-    for (size_t i{0}; i < obj.data.size(); ++i)
-        os << int(obj.data[i]) << std::endl;
+    for (size_t i{0}; i < obj.size; ++i)
+        os << int(obj.data[obj.size - i - 1]);
     return os;
 }
