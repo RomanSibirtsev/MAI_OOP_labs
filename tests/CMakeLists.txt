@@ -15,9 +15,18 @@ target_link_libraries(GTest::GTest INTERFACE gtest_main)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(lab1_test test.cpp ../src/hight.cpp ../include/hight.hpp)
+# lab1
+add_executable(lab1_test lab1_test.cpp ../lab1/src/hight.cpp ../lab1/include/hight.hpp)
 
 target_link_libraries(lab1_test PRIVATE GTest::GTest)
-target_include_directories(lab1_test PRIVATE ../include)
+target_include_directories(lab1_test PRIVATE ../lab1/include)
 
 add_test(lab1_test lab1_test)
+
+# lab2
+add_executable(lab2_test lab2_test.cpp ../lab2/src/Octal.cpp ../lab2/include/Octal.hpp)
+
+target_link_libraries(lab2_test PRIVATE GTest::GTest)
+target_include_directories(lab2_test PRIVATE ../lab2/include)
+
+add_test(lab2_test lab2_test)

@@ -23,7 +23,7 @@ public:
     void operator=(Octal const& obj);
     bool operator>(Octal const& obj);
     bool operator<(Octal const& obj);
-    bool operator==(Octal const& obj);
+    bool operator==(Octal const& obj) const;
     ~Octal() noexcept;
     u_char* data;
     size_t size;

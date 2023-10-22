@@ -3,9 +3,12 @@
 Octal::Octal() : size{0}, data{nullptr} {}
 
 Octal::Octal(const size_t & n, unsigned char t) : size{n} {
+    if (!('0' <= t <= '7')) {
+        throw std::invalid_argument("not 8th system");
+    }
     this->data = new u_char[n];
     for (size_t i = 0; i < n; ++i) {
-        this->data[i] = t;
+        this->data[i] = t - '0';
     }
 };
 
@@ -14,6 +17,9 @@ Octal::Octal(const std::initializer_list<unsigned char> &t) {
     this->data = new u_char[this->size];
     size_t i = this->size - 1;
     for (auto c : t) {
+        if (!('0' <= c <= '7')) {
+            throw std::invalid_argument("not 8th system");
+        }
         this->data[i--] = c - 48;
     }
 };
@@ -22,12 +28,14 @@ Octal::Octal(const std::string &t) {
     this->size = t.size(); 
     this->data = new u_char[this->size];
     for (size_t i = 0; i < this->size; ++i) {
+        if (!('0' <= t[i] && t[i] <= '7')) {
+            throw std::invalid_argument("not 8th system");
+        }
         this->data[i] = t[t.size() - 1 - i] - 48;
     }
 };
 
 Octal::Octal(const Octal& other) {
-    std::cout << "COPY"<<std::endl;
     this->size = other.size;
     this->data = new u_char[size];
     for (size_t i = 0; i < size; ++i) {
@@ -44,7 +52,7 @@ Octal::Octal(Octal&& other) noexcept {
 };
 
 Octal Octal::operator+(Octal const& obj) {
-    std::string res(std::max(this->size, obj.size)+1, '0');
+    std::string res(std::max(this->size, obj.size) + 1, '0');
     size_t i = 0;
     int tmp = 0;
 
@@ -77,6 +85,9 @@ Octal Octal::operator+(Octal const& obj) {
 }
 
 Octal Octal::operator-(Octal const& obj) {
+    if (*this < obj) {
+        throw std::logic_error("answer can`t be negative"); 
+    }
     std::string res(std::max(this->size, obj.size), '0');
     size_t i = 0;
     int tmp = 0;
@@ -96,7 +107,7 @@ Octal Octal::operator-(Octal const& obj) {
     for (; i < obj.size; ++i)
         res[i] = obj.data[i] + '0';
 
-    while (res[res.size() - 1] == '0') {
+    while (res[res.size() - 1] == '0' && res.size() > 1) {
          res.erase(res.size() - 1, 1);
     }
 
@@ -141,7 +152,7 @@ bool Octal::operator<(Octal const& obj) {
     }
     else return this->size < obj.size;
 }
-bool Octal::operator==(Octal const& obj) {
+bool Octal::operator==(Octal const& obj) const {
     if (this->size != obj.size) return 0;
     else {
         int i = this->size - 1;
