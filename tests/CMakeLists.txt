@@ -30,3 +30,19 @@ target_link_libraries(lab2_test PRIVATE GTest::GTest)
 target_include_directories(lab2_test PRIVATE ../lab2/include)
 
 add_test(lab2_test lab2_test)
+
+# lab3
+add_executable(lab3_test lab3_test.cpp  ../lab3/src/Array.cpp 
+                                        ../lab3/include/Figure.hpp
+                                        ../lab3/include/Rectangle.hpp
+                                        ../lab3/include/Square.hpp
+                                        ../lab3/include/Triangle.hpp
+                                        ../lab3/src/Figure.cpp
+                                        ../lab3/src/Rectangle.cpp
+                                        ../lab3/src/Square.cpp
+                                        ../lab3/src/Triangle.cpp)
+
+target_link_libraries(lab3_test PRIVATE GTest::GTest)
+target_include_directories(lab3_test PRIVATE ../lab3/include)
+
+add_test(lab3_test lab3_test)
