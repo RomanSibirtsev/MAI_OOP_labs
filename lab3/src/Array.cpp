@@ -61,6 +61,17 @@ void Array::remove(size_t idx) {
     data = newdata;
 }
 
+void Array::push_back(Figure* fig) {
+    Figure** newdata = new Figure*[size + 1];
+    for (size_t i = 0; i < size; ++i) {
+        newdata[i] = data[i];
+    }
+    newdata[size] = fig;
+    ++size;
+    delete[] data;
+    data = newdata;
+}
+
 Figure* Array::operator [] (int id) const{
     return this->data[id];
 }

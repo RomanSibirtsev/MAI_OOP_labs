@@ -10,6 +10,7 @@ public:
     Array(Array&& a) noexcept;
     ~Array();
     void remove(size_t idx);
+    void push_back(Figure* fig);
     Figure* operator[] (int id) const;
     double get_total_area() const;
     size_t get_size() const noexcept;
